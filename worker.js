@@ -1,7 +1,7 @@
 export default {
   fetch: (req, env) => {
     // get durable object
-    const stub = env.COUNTER.get(env.COUNTER.idFromName(req.headers.get('cf-connecting-ip'))
+    const stub = env.COUNTER.get(env.COUNTER.idFromName(req.headers.get('cf-connecting-ip')))
     
     // fetch durable object
     return stub.fetch(req)
