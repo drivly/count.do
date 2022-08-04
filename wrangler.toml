@@ -1,6 +1,6 @@
 name = "count-do"
 account_id = "b6641681fe423910342b9ffa1364c76d"
-route = "count.do/api/*"
+route = "count.do/api*"
 main = "worker.js"
 compatibility_date = "2022-08-04"
 
