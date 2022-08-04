@@ -1,0 +1,12 @@
+name = "count-do"
+account_id = "b6641681fe423910342b9ffa1364c76d"
+route = "count.do/*"
+main = "worker.js"
+compatibility_date = "2022-08-04"
+
+# [durable_objects]
+# bindings = [{name = "COLO", class_name = "Colo"}]
+
+# [[migrations]]
+# tag = "v1" # Should be unique for each entry
+# new_classes = ["Colo"]
