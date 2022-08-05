@@ -29,6 +29,7 @@ export class Counter {
     this.value = url.searchParams.has('reset') ? 0 : url.searchParams.has('value') ? this.value : this.value + 1
     await this.state.storage.put("value", this.value)
     return new Response(JSON.stringify({
+      key: url.pathname.replace('/api/',''),
       value: this.value,
       increment: url.origin + url.pathname,
       read: url.origin + url.pathname + '?value',
