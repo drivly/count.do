@@ -31,7 +31,7 @@ export class Counter {
     return new Response(JSON.stringify({
       key: url.pathname.replace('/api/',''),
       value: this.value,
-      increment: url.origin + url.pathname,
+      count: url.origin + url.pathname,
       read: url.origin + url.pathname + '?value',
       reset: url.origin + url.pathname + '?reset',
     }, null, 2), { headers: { 'content-type': 'application/json' }})
