@@ -30,6 +30,8 @@ export class Counter {
     await this.state.storage.put("value", this.value)
     return new Response(JSON.stringify({
       value: this.value,
+      increment: url.origin + url.pathname,
+      read: url.origin + url.pathname + '?value',
       reset: url.origin + url.pathname + '?reset',
     }, null, 2), { headers: { 'content-type': 'application/json' }})
   }
