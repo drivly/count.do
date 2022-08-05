@@ -28,11 +28,9 @@ export class Counter {
     // use this.value rather than storage
     this.value = url.searchParams.has('reset') ? 0 : url.searchParams.has('value') ? this.value : this.value + 1
     await this.state.storage.put("value", this.value)
-    url.searchParams.delete()
     return new Response(JSON.stringify({
-      count: this.value,
-      value: url.toString() + '?value',
-      reset: url.toString() + '?reset',
+      value: this.value,
+      reset: url.origin + url.pathname + '?reset',
     }, null, 2), { headers: { 'content-type': 'application/json' }})
   }
 }
