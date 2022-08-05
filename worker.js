@@ -26,13 +26,13 @@ export class Counter {
   async fetch(req) {
     const url = new URL(req.url)
     // use this.value rather than storage
-    this.value = url.searchParams.has('reset') ? 0 : url.searchParams.has('value') ? this.value : this.value + 1
+    this.value = url.searchParams.has('reset') ? 0 : url.searchParams.has('read') ? this.value : this.value + 1
     await this.state.storage.put("value", this.value)
     return new Response(JSON.stringify({
       key: url.pathname.replace('/api/',''),
       value: this.value,
       count: url.origin + url.pathname,
-      read: url.origin + url.pathname + '?value',
+      read: url.origin + url.pathname + '?read',
       reset: url.origin + url.pathname + '?reset',
     }, null, 2), { headers: { 'content-type': 'application/json' }})
   }
