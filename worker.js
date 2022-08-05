@@ -26,7 +26,7 @@ export class Counter {
   async fetch(req) {
     const url = new URL(req.url)
     // use this.value rather than storage
-    this.value = url.searchParams.has('reset') ? 0 : this.value + 1
+    this.value = url.searchParams.has('reset') ? 0 : url.searchParams.has('value') ? this.value : this.value + 1
     await this.state.storage.put("value", this.value)
     return new Response(JSON.stringify({
       count: req.url,
