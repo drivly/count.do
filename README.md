@@ -8,7 +8,7 @@ A Globally-Distributed Counter API with Transactional Integrity
 {
   "key": ":key",
   "value": 1,
-  "increment": "https://count.do/api/:key",
+  "count": "https://count.do/api/:key",
   "read": "https://count.do/api/:key?value",
   "reset": "https://count.do/api/:key?reset"
 }
