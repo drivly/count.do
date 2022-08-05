@@ -15,7 +15,7 @@ A Globally-Distributed Counter API with Transactional Integrity
 ```
 
 ## Options
-- `?value` returns current value without incrementing counter
+- `?read` returns current value without incrementing counter
 - `?reset` resets the counter to 0
 
 
