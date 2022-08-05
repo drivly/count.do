@@ -1,8 +1,9 @@
 export default {
   fetch: (req, env) => {
     // get durable object
-    const ip = req.headers.get('cf-connecting-ip')
-    const stub = env.COUNTER.get(env.COUNTER.idFromName(ip))
+    // const ip = req.headers.get('cf-connecting-ip')
+    const { hostname, pathname } 
+    const stub = env.COUNTER.get(env.COUNTER.idFromName(hostname + pathname))
     
     // fetch durable object
     return stub.fetch(req)
@@ -22,9 +23,10 @@ export class Counter {
   }
 
   // Handle HTTP requests from clients.
-  async fetch(request) {
+  async fetch(req) {
+    const url = new URL(req.url)
     // use this.value rather than storage
-    this.value = this.value + 1
+    this.value = url.searchParams.has('reset') ? 0 : this.value + 1
     await this.state.storage.put("value", this.value)
     return new Response(this.value)
   }
