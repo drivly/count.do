@@ -2,7 +2,7 @@ export default {
   fetch: (req, env) => {
     // get durable object
     // const ip = req.headers.get('cf-connecting-ip')
-    const { hostname, pathname } 
+    const { hostname, pathname } = new URL(req.url)
     const stub = env.COUNTER.get(env.COUNTER.idFromName(hostname + pathname))
     
     // fetch durable object
