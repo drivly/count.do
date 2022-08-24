@@ -15,7 +15,7 @@
   "name": "count.do",
   "main": "worker.js",
   "version": "1.0.0",
-  "description": "Cloudflare Worker & Durable Object for Counters",
+  "description": "A Globally-Distributed Counter API with Transactional Integrity",
   "repository": "git@github.com:drivly/count.do.git",
   "license": "MIT",
   "private": true
