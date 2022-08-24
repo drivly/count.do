@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "jest": "^28.1.3"
+  },
+  "scripts": {
+    "dev": "wrangler dev worker.js",
+    "deploy": "wrangler publish worker.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write '**/*.{js,css,json,md}'"
+  },
+  "devDependencies": {
+    "prettier": "^1.17.0",
+    "wrangler": "^0.0.27"
+  },
+  "name": "count.do",
+  "main": "worker.js",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker & Durable Object for Counters",
+  "repository": "git@github.com:drivly/count.do.git",
+  "license": "MIT",
+  "private": true
+}

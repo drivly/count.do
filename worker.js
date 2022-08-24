@@ -1,40 +1,42 @@
 export default {
   fetch: (req, env) => {
     // get durable object
-    // const ip = req.headers.get('cf-connecting-ip')
     const { hostname, pathname } = new URL(req.url)
-    const stub = env.COUNTER.get(env.COUNTER.idFromName(hostname + pathname))
-    
-    // fetch durable object
+    const name = hostname + pathname.replace(/^\/(api\/?)?/, '')
+    const id = env.COUNTER.idFromName(name)
+    const stub = env.COUNTER.get(id)
+
+    // call fetch from durable object
     return stub.fetch(req)
-  }
+  },
 }
 
 export class Counter {
   constructor(state, env) {
-    this.state = state;
+    this.state = state
     // `blockConcurrencyWhile()` ensures no requests are delivered until
     // initialization completes.
     this.state.blockConcurrencyWhile(async () => {
-      let stored = await this.state.storage.get("value");
+      let stored = await this.state.storage.get('value')
       // After initialization, future reads do not need to access storage.
-      this.value = stored || 0;
-    });
+      this.value = stored || 0
+    })
   }
 
   // Handle HTTP requests from clients.
   async fetch(req) {
-    const url = new URL(req.url)
+    const { origin, pathname, searchParams } = new URL(req.url)
     // use this.value rather than storage
-    this.value = url.searchParams.has('reset') ? 0 : url.searchParams.has('read') ? this.value : this.value + 1
-    await this.state.storage.put("value", this.value)
-    return new Response(JSON.stringify({
-      key: url.pathname.replace('/api/',''),
+    this.value = searchParams.has('reset') ? 0 : searchParams.has('read') ? this.value : this.value + 1
+    await this.state.storage.put('value', this.value)
+    const retval = {
+      key: pathname.replace(/^\/(api\/?)?/, ''),
       value: this.value,
-      count: url.origin + url.pathname,
-      read: url.origin + url.pathname + '?read',
-      reset: url.origin + url.pathname + '?reset',
-    }, null, 2), { headers: { 'content-type': 'application/json' }})
+      count: origin + pathname,
+      read: origin + pathname + '?read',
+      reset: origin + pathname + '?reset',
+    }
+    return new Response(JSON.stringify(retval, null, 2), { headers: { 'content-type': 'application/json' } })
   }
 }
 
