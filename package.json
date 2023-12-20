@@ -1,19 +1,16 @@
 {
   "name": "count.do",
   "module": "worker.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Globally-Distributed Counter API with Transactional Integrity",
   "repository": "git@github.com:drivly/count.do.git",
   "license": "MIT",
   "scripts": {
-    "dev": "wrangler dev worker.js --local true",
+    "dev": "wrangler dev worker.js",
     "deploy": "wrangler publish worker.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write '**/*.{js,css,json,md}'"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "jest": "^28.1.3",
-    "prettier": "^2.7.1",
-    "wrangler": "^2.0.27"
+    "wrangler": "^3.22.0"
   }
 }
