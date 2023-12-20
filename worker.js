@@ -61,7 +61,7 @@ export class Counter {
           init.method = callback.method || init.method || init.body ? 'POST' : 'GET'
           console.log({ url, init })
           const data = await fetch(url, init)
-          console.log({ data: await data.text() })
+          console.log({ data: data.headers.get('content-type') ? await data.json() : await data.text() })
         }
       }
       await this.state.storage.put('value', this.value)
