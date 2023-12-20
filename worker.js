@@ -23,18 +23,26 @@ export class Counter {
       const callback = await req.json()
       if (callback !== undefined) this.callback = callback
       if (!Array.isArray(this.callback) && this.callback !== null) this.callback = [this.callback]
+      for (let i = 0; i < this.callback.length; i++) {
+        const callback = this.callback[i]
+        if (typeof callback === 'string') this.callback[i] = { url: callback }
+        if (!this.callback[i]) this.callback[i] = {}
+        if (!this.callback[i].setCount) this.callback[i].setCount = 1
+        if (this.callback[i].repeat === undefined) this.callback[i].repeat = true
+      }
       await this.state.storage.put('callback', this.callback)
     }
     if (searchParams.has('callback') || searchParams.has('setCount') || searchParams.has('repeat')) {
-      if (typeof this.callback[0] === 'string' || this.callback[0] instanceof String) this.callback[0] = { url: this.callback[0] }
-      if (!this.callback.length) this.callback[0] = {}
+      const cb = this.callback.length === 1 ? this.callback[0] : {}
       if (searchParams.has('callback')) {
-        this.callback[0].url = searchParams.get('callback')
-        if (!this.callback[0].setCount) this.callback[0].setCount = 1
-        if (this.callback[0].repeat === undefined) this.callback[0].repeat = true
+        cb.url = decodeURIComponent(searchParams.get('callback'))
+        if (!cb.setCount) cb.setCount = 1
+        if (cb.repeat === undefined) cb.repeat = true
       }
-      if (searchParams.has('setCount')) this.callback[0].setCount = Math.max(parseInt(searchParams.get('setCount')), 1)
-      if (searchParams.has('repeat')) this.callback[0].repeat = searchParams.get('repeat').toLowerCase()[0] !== 'f'
+      if (searchParams.has('setCount')) cb.setCount = Math.max(parseInt(searchParams.get('setCount')), 1)
+      if (searchParams.has('repeat')) cb.repeat = searchParams.get('repeat')[0].toLowerCase() !== 'f'
+      if (this.callback.length === 1) this.callback[0] = cb
+      else this.callback.push(cb)
       await this.state.storage.put('callback', this.callback)
     }
 
@@ -46,7 +54,7 @@ export class Counter {
       for (let i = 0; i < callbacks.length; i++) {
         const callback = callbacks[i]
         if (this.value % callback.setCount === 0 && (callback.repeat || this.value === callback.setCount)) {
-          const url = typeof callback === 'string' || callback instanceof String ? callback : callback.url
+          const url = callback.url
           const init = callback.init || {}
           init.headers = { 'content-type': init.body ? 'application/json' : undefined, ...(callback.headers || init.headers) }
           if (['POST', 'PUT', 'PATCH'].includes(init.method)) init.body = JSON.stringify(callback.body)
