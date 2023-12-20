@@ -68,12 +68,25 @@ export class Counter {
     }
 
     const retval = {
-      key: pathname.replace(/^\/(api\/?)?/, ''),
-      value: this.value,
-      count: origin + pathname,
-      read: origin + pathname + '?read',
-      reset: origin + pathname + '?reset',
-      callbacks: this.callback?.length ? this.callback : undefined,
+      api: {
+        icon: '🧛',
+        name: 'count.do',
+        description: 'A simple counter with callbacks',
+        url: 'https://count.do/',
+        type: 'https://apis.do/tools',
+        endpoints: {
+          count: origin + pathname,
+          read: origin + pathname + '?read',
+          reset: origin + pathname + '?reset',
+        },
+        site: 'https://count.do',
+        repo: 'https://github.com/drivly/count.do',
+      },
+      data: {
+        key: pathname.replace(/^\/(api\/?)?/, ''),
+        value: this.value,
+        callbacks: this.callback?.length ? this.callback : undefined,
+      },
     }
     return new Response(JSON.stringify(retval, null, 2), { headers: { 'content-type': 'application/json' } })
   }
